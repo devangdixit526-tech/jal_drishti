@@ -1,9 +1,11 @@
+import 'leaflet/dist/leaflet.css';
+import RiskMap from '../components/RiskMap';
 import React, { useState } from 'react';
 import { ChevronDown, Bell, AlertTriangle, Droplets, ShieldAlert, Leaf, ArrowRight } from 'lucide-react';
 
 export default function Dashboard({ setCurrentPage }) {
-  const [selectedState, setSelectedState] = useState('Punjab');
-  const [selectedDistrict, setSelectedDistrict] = useState('Ludhiana');
+  const [selectedState, setSelectedState] = useState('Haryana');
+  const [selectedDistrict, setSelectedDistrict] = useState('Bhiwani');
   const [selectedCrop, setSelectedCrop] = useState('Paddy');
 
   return (
@@ -12,7 +14,7 @@ export default function Dashboard({ setCurrentPage }) {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-            Good morning, Devang <span className="animate-bounce">👋</span>
+            HELLO! <span className="animate-bounce">👋</span>
           </h1>
           <p className="text-slate-500 text-sm mt-1">
             Understand the water story behind every crop.
@@ -28,7 +30,7 @@ export default function Dashboard({ setCurrentPage }) {
             <div className="w-8 h-8 rounded-full bg-[#005f60] text-white flex items-center justify-center font-bold text-sm">
               D
             </div>
-            <span className="text-sm font-semibold text-slate-700">Devang</span>
+            {/* <span className="text-sm font-semibold text-slate-700">Devang</span> */}
           </div>
         </div>
       </div>
@@ -62,9 +64,9 @@ export default function Dashboard({ setCurrentPage }) {
                 onChange={(e) => setSelectedDistrict(e.target.value)}
                 className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
-                <option value="Ludhiana">Ludhiana</option>
-                <option value="Amritsar">Amritsar</option>
-                <option value="Jalandhar">Jalandhar</option>
+                <option value="Bhiwani">Bhiwani</option>
+                <option value="Sirsa">Sirsa</option>
+                <option value="Ambala">Ambala</option>
               </select>
               <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" />
             </div>
@@ -107,19 +109,10 @@ export default function Dashboard({ setCurrentPage }) {
             </button>
           </div>
 
-          {/* Graphical Map Representation */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="relative w-72 h-72 rounded-full border border-teal-500/30 bg-teal-950/20 flex items-center justify-center">
-              <div className="w-52 h-52 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
-                <div className="w-32 h-32 rounded-full bg-red-500/30 border border-red-500/40 flex items-center justify-center">
-                  <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-red-400 pointer-events-auto">
-                    📍 {selectedState} ({selectedDistrict})
-                  </span>
-                </div>
-              </div>
-            </div>
+          {/* Leaflet Map */}
+          <div className="absolute inset-0 pt-14">
+            <RiskMap />
           </div>
-
           {/* Map Legend */}
           <div className="flex items-center justify-center gap-6 z-10 bg-slate-900/60 backdrop-blur-md py-2 px-4 rounded-xl border border-slate-800 self-center">
             <div className="flex items-center gap-1.5 text-xs text-slate-300 font-medium">

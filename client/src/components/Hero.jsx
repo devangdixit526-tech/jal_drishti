@@ -32,8 +32,10 @@ export default function Hero({ onExplore, setCurrentPage, onOpenCalculator }) {
           </h1>
 
           <p className="text-slate-300 text-lg leading-relaxed max-w-xl">
-            Satellite-derived crop information + groundwater data + crop water demand in one decision layer.
-          </p>
+  Combine crop information, water demand and groundwater trends to identify agricultural water-stress hotspots.
+</p>
+
+          
 
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-4 pt-4">
@@ -51,7 +53,7 @@ export default function Hero({ onExplore, setCurrentPage, onOpenCalculator }) {
               className="flex items-center gap-2.5 bg-white/90 hover:bg-white text-slate-900 px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all shadow-md border border-slate-200"
             >
               <Calculator className="w-4 h-4 text-teal-600" />
-              <span>Quick Risk Calculator</span>
+              <span>Check Water Risk</span>
             </button>
           </div>
         </div>

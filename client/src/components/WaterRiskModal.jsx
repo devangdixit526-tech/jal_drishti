@@ -50,8 +50,10 @@ export default function WaterRiskModal({ isOpen, onClose, setCurrentPage }) {
               <Calculator className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-lg">Quick Risk Simulator</h3>
-              <p className="text-slate-500 text-xs">Estimate regional water demand impact instantly</p>
+              <h3 className="font-bold text-slate-900 text-lg">Check Water Risk</h3>
+              <p className="text-slate-500 text-xs">
+                     Understand crop water demand and its potential impact on groundwater
+              </p>
             </div>
           </div>
           <button 
