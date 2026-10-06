@@ -1,44 +1,48 @@
 import React from 'react';
 
-export default function Navbar({ onExplore, setCurrentPage }) {
+export default function Navbar({ currentPage, setCurrentPage }) {
+  const navLinks = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'insights', label: 'Insights' },
+  ];
+
   return (
-    <header className="bg-[#0A2E30] text-white px-8 py-4 flex items-center justify-between">
+    <header className="w-full bg-[#072225] text-white px-8 py-4 flex items-center justify-between border-b border-teal-900/40 sticky top-0 z-50">
       {/* Brand Logo */}
-      <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentPage('home')}>
-        <span className="font-bold text-xl tracking-wide">JalDrishti</span>
+      <div 
+        onClick={() => setCurrentPage('home')}
+        className="text-xl font-bold tracking-wide cursor-pointer flex items-center gap-2"
+      >
+        <span>JalDrishti</span>
       </div>
 
       {/* Nav Links */}
       <nav className="flex items-center gap-8">
-        <button 
-          onClick={() => setCurrentPage('home')}
-          className="text-sm font-medium text-teal-400 hover:text-teal-300 transition-colors"
-        >
-          Home
-        </button>
-
-        {/* 🌟 ABOUT BUTTON FIX */}
-        <button 
-          onClick={() => setCurrentPage('about')}
-          className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
-        >
-          About
-        </button>
-
-        <button 
-          onClick={() => setCurrentPage('about')}
-          className="text-sm font-medium text-slate-300 hover:text-white transition-colors"
-        >
-          Data Sources
-        </button>
+        {navLinks.map((link) => {
+          const isActive = currentPage === link.id;
+          return (
+            <button
+              key={link.id}
+              onClick={() => setCurrentPage(link.id)}
+              className={`text-sm font-medium transition-colors ${
+                isActive
+                  ? 'text-teal-400 font-semibold'
+                  : 'text-slate-300 hover:text-white'
+              }`}
+            >
+              {link.label}
+            </button>
+          );
+        })}
       </nav>
 
-      {/* CTA Button */}
-      <button 
-        onClick={onExplore}
-        className="bg-cyan-400 hover:bg-cyan-300 text-slate-900 font-semibold px-5 py-2 rounded-full text-sm transition-all"
+      {/* Action Button */}
+      <button
+        onClick={() => setCurrentPage('dashboard')}
+        className="bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-5 py-2 rounded-xl text-sm font-semibold transition-all shadow-xs"
       >
-        Get Started
+        Open Dashboard
       </button>
     </header>
   );
