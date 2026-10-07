@@ -1,16 +1,48 @@
-# React + Vite
+# JalDrishti
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Groundwater-stress and crop-water-demand intelligence for Indian agriculture.
+Helps identify agricultural water-stress hotspots by combining groundwater
+status, crop water demand and trend data.
 
-Currently, two official plugins are available:
+## Layout
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```
+client/   React 19 + Vite + Tailwind frontend
+server/   Node + Express API
+```
 
-## React Compiler
+## Running locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Two terminals. Backend first:
 
-## Expanding the ESLint configuration
+```bash
+cd server
+npm install
+cp .env.example .env
+npm run dev          # http://localhost:4000/api/v1
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Then the frontend:
+
+```bash
+cd client
+npm install
+cp .env.example .env
+npm run dev          # http://localhost:5173
+```
+
+The frontend reads `VITE_API_BASE_URL` from `client/.env`. If the backend is not
+running, the dashboard shows an error banner telling you so rather than
+silently displaying nothing.
+
+## Documentation
+
+- [`server/README.md`](server/README.md) - API endpoints, architecture, roadmap
+
+## Status
+
+| Area | State |
+|---|---|
+| Frontend UI (5 pages) | complete |
+| Reference data API (states, districts, crops) | complete, wired to the dashboard |
+| Groundwater / risk / map / insights data | **still hardcoded in the UI** - see the server roadmap |

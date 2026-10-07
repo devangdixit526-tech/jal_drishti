@@ -2,11 +2,40 @@ import 'leaflet/dist/leaflet.css';
 import RiskMap from '../components/RiskMap';
 import React, { useState } from 'react';
 import { ChevronDown, Bell, AlertTriangle, Droplets, ShieldAlert, Leaf, ArrowRight } from 'lucide-react';
+import { api } from '../lib/api';
+import { useApi } from '../hooks/useApi';
 
 export default function Dashboard({ setCurrentPage }) {
-  const [selectedState, setSelectedState] = useState('Haryana');
-  const [selectedDistrict, setSelectedDistrict] = useState('Bhiwani');
-  const [selectedCrop, setSelectedCrop] = useState('Paddy');
+  // Selections hold IDs ('HR', 'PB-LDH', 'paddy') rather than display labels
+  // ('Haryana', 'Bhiwani', 'Paddy') - IDs are what the API understands.
+  const [selectedStateId, setSelectedStateId] = useState('HR');
+  const [selectedDistrictId, setSelectedDistrictId] = useState('');
+  const [selectedCropId, setSelectedCropId] = useState('paddy');
+
+  // --- live reference data from the backend ----------------------------
+  const statesReq = useApi((opts) => api.listStates(opts), []);
+  const districtsReq = useApi(
+    (opts) => api.listDistricts(selectedStateId, opts),
+    [selectedStateId],
+    { skip: !selectedStateId },
+  );
+  const cropsReq = useApi((opts) => api.listCrops(undefined, opts), []);
+
+  const states = statesReq.data ?? [];
+  const districts = districtsReq.data ?? [];
+  const crops = cropsReq.data ?? [];
+
+  // Changing the state swaps the district list underneath us, so the stored
+  // selection may no longer exist in it.
+  //
+  // This is DERIVED rather than synced with an effect: an effect that calls
+  // setState here would render once with an invalid selection, then again to
+  // correct it. Computing it inline is always consistent and never flickers.
+  const effectiveDistrictId = districts.some((d) => d.id === selectedDistrictId)
+    ? selectedDistrictId
+    : (districts[0]?.id ?? '');
+
+  const apiError = statesReq.error ?? districtsReq.error ?? cropsReq.error;
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-6">
@@ -35,6 +64,21 @@ export default function Dashboard({ setCurrentPage }) {
         </div>
       </div>
 
+      {/* API error banner - shown only when the backend is unreachable or errored */}
+      {apiError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-2xl p-4 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-semibold">Could not load region data</p>
+            <p className="text-xs mt-0.5">{apiError.message}</p>
+            <p className="text-xs mt-1 text-red-500">
+              Start the backend with <code className="font-mono">npm run dev</code> inside the{' '}
+              <code className="font-mono">server/</code> folder.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Region Filter Bar */}
       <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full md:w-auto flex-1 max-w-3xl">
@@ -43,13 +87,17 @@ export default function Dashboard({ setCurrentPage }) {
             <label className="block text-xs font-semibold text-slate-500 mb-1">State</label>
             <div className="relative">
               <select
-                value={selectedState}
-                onChange={(e) => setSelectedState(e.target.value)}
-                className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                value={selectedStateId}
+                onChange={(e) => setSelectedStateId(e.target.value)}
+                disabled={statesReq.loading}
+                className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:opacity-60"
               >
-                <option value="Punjab">Punjab</option>
-                <option value="Haryana">Haryana</option>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                {statesReq.loading && <option>Loading...</option>}
+                {states.map((state) => (
+                  <option key={state.id} value={state.id}>
+                    {state.name}
+                  </option>
+                ))}
               </select>
               <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" />
             </div>
@@ -60,13 +108,17 @@ export default function Dashboard({ setCurrentPage }) {
             <label className="block text-xs font-semibold text-slate-500 mb-1">District</label>
             <div className="relative">
               <select
-                value={selectedDistrict}
-                onChange={(e) => setSelectedDistrict(e.target.value)}
-                className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                value={effectiveDistrictId}
+                onChange={(e) => setSelectedDistrictId(e.target.value)}
+                disabled={districtsReq.loading || districts.length === 0}
+                className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:opacity-60"
               >
-                <option value="Bhiwani">Bhiwani</option>
-                <option value="Sirsa">Sirsa</option>
-                <option value="Ambala">Ambala</option>
+                {districtsReq.loading && <option>Loading...</option>}
+                {districts.map((district) => (
+                  <option key={district.id} value={district.id}>
+                    {district.name}
+                  </option>
+                ))}
               </select>
               <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" />
             </div>
@@ -77,14 +129,17 @@ export default function Dashboard({ setCurrentPage }) {
             <label className="block text-xs font-semibold text-slate-500 mb-1">Crop</label>
             <div className="relative">
               <select
-                value={selectedCrop}
-                onChange={(e) => setSelectedCrop(e.target.value)}
-                className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                value={selectedCropId}
+                onChange={(e) => setSelectedCropId(e.target.value)}
+                disabled={cropsReq.loading}
+                className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:opacity-60"
               >
-                <option value="Paddy">Paddy</option>
-                <option value="Wheat">Wheat</option>
-                <option value="Maize">Maize</option>
-                <option value="Millets">Millets</option>
+                {cropsReq.loading && <option>Loading...</option>}
+                {crops.map((crop) => (
+                  <option key={crop.id} value={crop.id}>
+                    {crop.name}
+                  </option>
+                ))}
               </select>
               <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" />
             </div>

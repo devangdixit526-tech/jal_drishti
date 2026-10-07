@@ -1,0 +1,122 @@
+{
+  "_meta": {
+    "description": "Single source of truth for crop water characteristics.",
+    "why": "The frontend previously held TWO conflicting copies of this data (WaterRiskModal.jsx said wheat=3.4 mm/day, CropIntelligence.jsx said 4.2). This file replaces both.",
+    "provenance": "referenceWaterDemandMmPerDay values are PROVISIONAL seed values carried over from the original UI mockup. They are flagged provisional:true and must be replaced by computed FAO-56 values (ETo x Kc) once the weather integration lands. Do not present them as authoritative.",
+    "kcSource": "FAO Irrigation and Drainage Paper 56, Table 12 (single crop coefficients)"
+  },
+  "crops": [
+    {
+      "id": "paddy",
+      "name": "Paddy",
+      "aliases": ["Rice", "Paddy (Rice)"],
+      "season": "Kharif",
+      "referenceWaterDemandMmPerDay": 5.8,
+      "provisional": true,
+      "demandLevel": "HIGH",
+      "groundwaterDependence": "High",
+      "waterStressContributionPct": 72,
+      "growthDays": 130,
+      "kc": { "initial": 1.05, "mid": 1.2, "late": 0.9 },
+      "image": "/crops/paddy.jpg"
+    },
+    {
+      "id": "wheat",
+      "name": "Wheat",
+      "aliases": [],
+      "season": "Rabi",
+      "referenceWaterDemandMmPerDay": 4.2,
+      "provisional": true,
+      "demandLevel": "MEDIUM",
+      "groundwaterDependence": "Medium",
+      "waterStressContributionPct": 48,
+      "growthDays": 140,
+      "kc": { "initial": 0.7, "mid": 1.15, "late": 0.35 },
+      "image": "/crops/wheat.jpg"
+    },
+    {
+      "id": "maize",
+      "name": "Maize",
+      "aliases": [],
+      "season": "Kharif",
+      "referenceWaterDemandMmPerDay": 3.5,
+      "provisional": true,
+      "demandLevel": "LOW",
+      "groundwaterDependence": "Low-Medium",
+      "waterStressContributionPct": 30,
+      "growthDays": 125,
+      "kc": { "initial": 0.3, "mid": 1.2, "late": 0.5 },
+      "image": "/crops/maize.jpg"
+    },
+    {
+      "id": "millets",
+      "name": "Millets",
+      "aliases": ["Bajra", "Pearl Millet"],
+      "season": "Kharif",
+      "referenceWaterDemandMmPerDay": 2.8,
+      "provisional": true,
+      "demandLevel": "LOW",
+      "groundwaterDependence": "Low",
+      "waterStressContributionPct": 18,
+      "growthDays": 95,
+      "kc": { "initial": 0.3, "mid": 1.0, "late": 0.3 },
+      "image": "/crops/millets.jpg"
+    },
+    {
+      "id": "sugarcane",
+      "name": "Sugarcane",
+      "aliases": [],
+      "season": "Annual",
+      "referenceWaterDemandMmPerDay": 6.2,
+      "provisional": true,
+      "demandLevel": "HIGH",
+      "groundwaterDependence": "Very High",
+      "waterStressContributionPct": 85,
+      "growthDays": 330,
+      "kc": { "initial": 0.4, "mid": 1.25, "late": 0.75 },
+      "image": null
+    },
+    {
+      "id": "mustard",
+      "name": "Mustard",
+      "aliases": ["Rapeseed"],
+      "season": "Rabi",
+      "referenceWaterDemandMmPerDay": 2.6,
+      "provisional": true,
+      "demandLevel": "LOW",
+      "groundwaterDependence": "Low",
+      "waterStressContributionPct": 20,
+      "growthDays": 125,
+      "kc": { "initial": 0.35, "mid": 1.1, "late": 0.35 },
+      "image": null
+    },
+    {
+      "id": "gram",
+      "name": "Gram",
+      "aliases": ["Chickpea", "Chana"],
+      "season": "Rabi",
+      "referenceWaterDemandMmPerDay": 2.4,
+      "provisional": true,
+      "demandLevel": "LOW",
+      "groundwaterDependence": "Low",
+      "waterStressContributionPct": 15,
+      "growthDays": 105,
+      "kc": { "initial": 0.4, "mid": 1.0, "late": 0.35 },
+      "image": null
+    },
+    {
+      "id": "cotton",
+      "name": "Cotton",
+      "aliases": [],
+      "season": "Kharif",
+      "referenceWaterDemandMmPerDay": 4.0,
+      "provisional": true,
+      "demandLevel": "MEDIUM",
+      "groundwaterDependence": "Medium",
+      "waterStressContributionPct": 45,
+      "growthDays": 180,
+      "kc": { "initial": 0.35, "mid": 1.18, "late": 0.6 },
+      "image": null
+    }
+  ]
+}
