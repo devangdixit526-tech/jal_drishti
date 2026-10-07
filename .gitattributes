@@ -1,0 +1,24 @@
+# Normalize all text files to LF in the repository.
+# Prevents phantom whole-file diffs when the repo lives on Windows/OneDrive.
+* text=auto eol=lf
+
+# Windows-only scripts must keep CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary files: never touch
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.avif binary
+*.webp binary
+*.ico  binary
+*.woff binary
+*.woff2 binary
+*.pdf  binary
+*.xlsx binary
+*.zip  binary
+
+# Lockfiles: keep diffs collapsed in review
+package-lock.json -diff linguist-generated
