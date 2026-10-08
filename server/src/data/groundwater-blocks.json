@@ -1,0 +1,1043 @@
+{
+ "_meta": {
+  "description": "CGWB block-level ('assessment unit') groundwater categorisation for Haryana.",
+  "source": "Central Ground Water Board, 'Block wise Categorization as per GWRA-2025' and 'GWRA-2024'.",
+  "sourceUrls": [
+   "https://cgwb.gov.in/cgwbpnm/public/uploads/documents/1767356717630008751file.pdf",
+   "https://cgwb.gov.in/cgwbpnm/public/uploads/documents/17365121771867268670file.pdf"
+  ],
+  "retrieved": "2026-10-08",
+  "categories": [
+   "Safe",
+   "Semi-Critical",
+   "Critical",
+   "Over-Exploited"
+  ],
+  "categoryDefinition": "Stage of ground water extraction: Safe <=70%, Semi-Critical >70-90%, Critical >90-100%, Over-Exploited >100%.",
+  "validation": "Parsed counts match CGWB's published Haryana totals exactly: 143 units - 91 Over-Exploited, 6 Critical, 15 Semi-Critical, 31 Safe.",
+  "caveat": "Categorisation is annual and per block. It is NOT a live measurement; pair it with the DWLR/observation-well time series for current conditions.",
+  "unitCount": 143
+ },
+ "summary": {
+  "2025": {
+   "Over-Exploited": 91,
+   "Critical": 6,
+   "Semi-Critical": 15,
+   "Safe": 31
+  },
+  "2024": {
+   "Over-Exploited": 88,
+   "Critical": 11,
+   "Semi-Critical": 8,
+   "Safe": 36
+  },
+  "trend": {
+   "unchanged": 130,
+   "improved": 4,
+   "worsened": 9
+  }
+ },
+ "units": [
+  {
+   "district": "Ambala",
+   "unit": "Ambala-I",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Ambala",
+   "unit": "Ambala-Ii",
+   "category2025": "Critical",
+   "category2024": "Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Ambala",
+   "unit": "Barara",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Ambala",
+   "unit": "Naraingarh",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Ambala",
+   "unit": "Saha",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Ambala",
+   "unit": "Shahzadpur",
+   "category2025": "Semi-Critical",
+   "category2024": "Semi-Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Bhiwani",
+   "unit": "Bawani Khera",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Bhiwani",
+   "unit": "Behal",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Bhiwani",
+   "unit": "Bhiwani",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Bhiwani",
+   "unit": "Kairu",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Bhiwani",
+   "unit": "Loharu",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Bhiwani",
+   "unit": "Siwani",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Bhiwani",
+   "unit": "Tosham",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Charkhi Dadri",
+   "unit": "Badhra",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Charkhi Dadri",
+   "unit": "Baund",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Charkhi Dadri",
+   "unit": "Charkhi Dadri",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Charkhi Dadri",
+   "unit": "Jhojhu",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Faridabad",
+   "unit": "Ballabgarh",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Faridabad",
+   "unit": "Faridabad",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Faridabad",
+   "unit": "Faridabad_Urban",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Faridabad",
+   "unit": "Tigaon",
+   "category2025": "Semi-Critical",
+   "category2024": "Critical",
+   "trend": "improved"
+  },
+  {
+   "district": "Fatehabad",
+   "unit": "Bhattu Kalan",
+   "category2025": "Semi-Critical",
+   "category2024": "Semi-Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Fatehabad",
+   "unit": "Bhuna",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Fatehabad",
+   "unit": "Fatehabad",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Fatehabad",
+   "unit": "Jakhal",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Fatehabad",
+   "unit": "Nagpur",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Fatehabad",
+   "unit": "Ratia",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Fatehabad",
+   "unit": "Tohana",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Gurugram",
+   "unit": "Farrukh Nagar",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Gurugram",
+   "unit": "Gurgaon",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Gurugram",
+   "unit": "Gurgaon_Urban",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Gurugram",
+   "unit": "Pataudi",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Gurugram",
+   "unit": "Sohna",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Hisar",
+   "unit": "Adampur",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Hisar",
+   "unit": "Agroha",
+   "category2025": "Semi-Critical",
+   "category2024": "Critical",
+   "trend": "improved"
+  },
+  {
+   "district": "Hisar",
+   "unit": "Barwala",
+   "category2025": "Semi-Critical",
+   "category2024": "Critical",
+   "trend": "improved"
+  },
+  {
+   "district": "Hisar",
+   "unit": "Hansi",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Hisar",
+   "unit": "Hansi-Ii",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Hisar",
+   "unit": "Hisar-I",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Hisar",
+   "unit": "Hisar-Ii",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Hisar",
+   "unit": "Narnaund",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Hisar",
+   "unit": "Uklana",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jhajjar",
+   "unit": "Badli",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jhajjar",
+   "unit": "Bahadurgarh",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jhajjar",
+   "unit": "Beri",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jhajjar",
+   "unit": "Jhajjar",
+   "category2025": "Semi-Critical",
+   "category2024": "Safe",
+   "trend": "worsened"
+  },
+  {
+   "district": "Jhajjar",
+   "unit": "Machhrauli",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jhajjar",
+   "unit": "Matannail",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jhajjar",
+   "unit": "Salhawas",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jind",
+   "unit": "Alewa",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jind",
+   "unit": "Jind",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jind",
+   "unit": "Julana",
+   "category2025": "Semi-Critical",
+   "category2024": "Safe",
+   "trend": "worsened"
+  },
+  {
+   "district": "Jind",
+   "unit": "Narwana",
+   "category2025": "Semi-Critical",
+   "category2024": "Safe",
+   "trend": "worsened"
+  },
+  {
+   "district": "Jind",
+   "unit": "Pillukhera",
+   "category2025": "Semi-Critical",
+   "category2024": "Semi-Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jind",
+   "unit": "Safidon",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jind",
+   "unit": "Uchana",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Jind",
+   "unit": "Ujhana",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kaithal",
+   "unit": "Dhand",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kaithal",
+   "unit": "Guhla",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kaithal",
+   "unit": "Kaithal",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kaithal",
+   "unit": "Kalayat",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kaithal",
+   "unit": "Pundri",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kaithal",
+   "unit": "Rajound",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kaithal",
+   "unit": "Siwan",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Karnal",
+   "unit": "Assandh",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Karnal",
+   "unit": "Gharaunda (Part)",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Karnal",
+   "unit": "Indri",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Karnal",
+   "unit": "Karnal",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Karnal",
+   "unit": "Kunjpura",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Karnal",
+   "unit": "Munak",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Karnal",
+   "unit": "Nilokheri",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Karnal",
+   "unit": "Nissing At Chirao",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kurukshetra",
+   "unit": "Babain",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kurukshetra",
+   "unit": "Ismailabad",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kurukshetra",
+   "unit": "Ladwa",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kurukshetra",
+   "unit": "Pehowa",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kurukshetra",
+   "unit": "Pipli",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kurukshetra",
+   "unit": "Shahbad",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Kurukshetra",
+   "unit": "Thanesar",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Mahendragarh",
+   "unit": "Ateli Nangal",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Mahendragarh",
+   "unit": "Kanina",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Mahendragarh",
+   "unit": "Mahendragarh",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Mahendragarh",
+   "unit": "Nangal Chaudhry",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Mahendragarh",
+   "unit": "Narnaul",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Mahendragarh",
+   "unit": "Nizampur",
+   "category2025": "Over-Exploited",
+   "category2024": "Critical",
+   "trend": "worsened"
+  },
+  {
+   "district": "Mahendragarh",
+   "unit": "Satnali",
+   "category2025": "Over-Exploited",
+   "category2024": "Semi-Critical",
+   "trend": "worsened"
+  },
+  {
+   "district": "Mahendragarh",
+   "unit": "Sihma",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Nuh",
+   "unit": "Ferozepur Jhirka",
+   "category2025": "Semi-Critical",
+   "category2024": "Critical",
+   "trend": "improved"
+  },
+  {
+   "district": "Nuh",
+   "unit": "Indri",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Nuh",
+   "unit": "Nagina",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Nuh",
+   "unit": "Nuh",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Nuh",
+   "unit": "Pingwan",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Nuh",
+   "unit": "Punahana",
+   "category2025": "Critical",
+   "category2024": "Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Nuh",
+   "unit": "Taoru",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Palwal",
+   "unit": "Badoli",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Palwal",
+   "unit": "Hassanpur",
+   "category2025": "Critical",
+   "category2024": "Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Palwal",
+   "unit": "Hathin",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Palwal",
+   "unit": "Hodal",
+   "category2025": "Semi-Critical",
+   "category2024": "Semi-Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Palwal",
+   "unit": "Palwal",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Palwal",
+   "unit": "Prithla",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Panchkula",
+   "unit": "Barwala",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Panchkula",
+   "unit": "Pinjore",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Panchkula",
+   "unit": "Raipur Rani",
+   "category2025": "Critical",
+   "category2024": "Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Panipat",
+   "unit": "Bapoli",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Panipat",
+   "unit": "Israna",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Panipat",
+   "unit": "Madlauda",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Panipat",
+   "unit": "Panipat",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Panipat",
+   "unit": "Samalkha",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Panipat",
+   "unit": "Sanauli Khurd",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rewari",
+   "unit": "Bawal",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rewari",
+   "unit": "Dahina",
+   "category2025": "Critical",
+   "category2024": "Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rewari",
+   "unit": "Dharuhera",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rewari",
+   "unit": "Jatusana",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rewari",
+   "unit": "Khol At Rewari",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rewari",
+   "unit": "Nahar",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rewari",
+   "unit": "Rewari",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rohtak",
+   "unit": "Kalanaur",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rohtak",
+   "unit": "Lakhan Majra",
+   "category2025": "Semi-Critical",
+   "category2024": "Safe",
+   "trend": "worsened"
+  },
+  {
+   "district": "Rohtak",
+   "unit": "Maham",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rohtak",
+   "unit": "Rohtak",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Rohtak",
+   "unit": "Sampla",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sirsa",
+   "unit": "Baragudha",
+   "category2025": "Semi-Critical",
+   "category2024": "Semi-Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sirsa",
+   "unit": "Dabwali",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sirsa",
+   "unit": "Ellenabad",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sirsa",
+   "unit": "Nathusari Chopta",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sirsa",
+   "unit": "Odhan",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sirsa",
+   "unit": "Rania",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sirsa",
+   "unit": "Sirsa",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sonipat",
+   "unit": "Ganaur",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sonipat",
+   "unit": "Gohana",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sonipat",
+   "unit": "Kathura",
+   "category2025": "Semi-Critical",
+   "category2024": "Safe",
+   "trend": "worsened"
+  },
+  {
+   "district": "Sonipat",
+   "unit": "Kharkhoda",
+   "category2025": "Safe",
+   "category2024": "Safe",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sonipat",
+   "unit": "Mundlana",
+   "category2025": "Over-Exploited",
+   "category2024": "Critical",
+   "trend": "worsened"
+  },
+  {
+   "district": "Sonipat",
+   "unit": "Murthal",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sonipat",
+   "unit": "Rai",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Sonipat",
+   "unit": "Sonipat",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Yamunanagar",
+   "unit": "Bilaspur",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Yamunanagar",
+   "unit": "Chhachhrauli",
+   "category2025": "Semi-Critical",
+   "category2024": "Semi-Critical",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Yamunanagar",
+   "unit": "Jagadhri",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Yamunanagar",
+   "unit": "Khizrabad",
+   "category2025": "Critical",
+   "category2024": "Semi-Critical",
+   "trend": "worsened"
+  },
+  {
+   "district": "Yamunanagar",
+   "unit": "Mustafabad",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Yamunanagar",
+   "unit": "Radaur",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  },
+  {
+   "district": "Yamunanagar",
+   "unit": "Sadaura (Part)",
+   "category2025": "Over-Exploited",
+   "category2024": "Over-Exploited",
+   "trend": "unchanged"
+  }
+ ]
+}
