@@ -5,6 +5,20 @@ import { ChevronDown, Bell, AlertTriangle, Droplets, ShieldAlert, Leaf, ArrowRig
 import { api } from '../lib/api';
 import { useApi } from '../hooks/useApi';
 
+/** Tailwind classes per risk band. Four bands - CGWB's official categorisation. */
+const BAND_STYLES = {
+  Low: { text: 'text-emerald-600', bg: 'bg-emerald-100 text-emerald-700 border-emerald-200', bar: 'text-emerald-500' },
+  Moderate: { text: 'text-amber-600', bg: 'bg-amber-100 text-amber-700 border-amber-200', bar: 'text-amber-500' },
+  High: { text: 'text-orange-600', bg: 'bg-orange-100 text-orange-700 border-orange-200', bar: 'text-orange-500' },
+  Critical: { text: 'text-red-600', bg: 'bg-red-100 text-red-700 border-red-200', bar: 'text-red-500' },
+};
+
+const bandStyle = (band) => BAND_STYLES[band] ?? BAND_STYLES.Moderate;
+
+/** Em dash while a value is still loading, so the layout never jumps. */
+const show = (value, suffix = '') =>
+  value === null || value === undefined ? '—' : `${value}${suffix}`;
+
 export default function Dashboard({ setCurrentPage }) {
   // Selections hold IDs ('HR', 'PB-LDH', 'paddy') rather than display labels
   // ('Haryana', 'Bhiwani', 'Paddy') - IDs are what the API understands.
@@ -37,8 +51,68 @@ export default function Dashboard({ setCurrentPage }) {
 
   // The map and the demand endpoints key on district NAME, not id.
   const selectedDistrict = districts.find((d) => d.id === effectiveDistrictId);
+  const districtName = selectedDistrict?.name;
+  const selectedCrop = crops.find((c) => c.id === selectedCropId);
+
+  // Groundwater, weather and risk were collected for Haryana ONLY. regions.json
+  // still lists Punjab and part of Uttar Pradesh from the original seed, so the
+  // analysis calls are skipped rather than fired off to 404.
+  const isHaryana = selectedStateId === 'HR';
+  const canAnalyse = isHaryana && Boolean(districtName);
+
+  // --- computed analysis from the backend ------------------------------
+  const groundwaterReq = useApi((opts) => api.getGroundwaterStatus(undefined, opts), [], {
+    skip: !isHaryana,
+  });
+  const riskReq = useApi(
+    (opts) => api.getRiskScore({ district: districtName }, opts),
+    [districtName],
+    { skip: !canAnalyse },
+  );
+  const demandReq = useApi(
+    (opts) => api.getWaterDemand({ district: districtName, crop: selectedCropId }, opts),
+    [districtName, selectedCropId],
+    { skip: !canAnalyse || !selectedCropId },
+  );
+  const compareReq = useApi(
+    (opts) =>
+      api.compareWaterDemand({ district: districtName, season: selectedCrop?.season }, opts),
+    [districtName, selectedCrop?.season],
+    { skip: !canAnalyse || !selectedCrop?.season },
+  );
+
+  const groundwater = groundwaterReq.data;
+  const risk = riskReq.data;
+  const demand = demandReq.data;
+  const comparison = compareReq.data;
+
+  // Haryana-wide block counts for the status card.
+  const blocks2025 = groundwater?.summary?.['2025'];
+  const overExploited = blocks2025?.['Over-Exploited'] ?? null;
+  const totalBlocks = blocks2025
+    ? Object.values(blocks2025).reduce((a, b) => a + b, 0)
+    : null;
+  const overExploitedPct =
+    overExploited !== null && totalBlocks ? (overExploited / totalBlocks) * 100 : null;
+
+  // The cheapest crop of the same season, and what switching to it would save.
+  // Replaces the hardcoded "Paddy -> Maize, -32%", which did not match its
+  // own data. `savingVsThirstiestPct` is measured against the season's
+  // thirstiest crop, so the saving is only meaningful when the crop currently
+  // selected IS that thirstiest one - otherwise we compute it directly.
+  const cheapest = comparison?.items?.[0] ?? null;
+  const currentItem = comparison?.items?.find((i) => i.cropId === selectedCropId) ?? null;
+  const switchSavingPct =
+    cheapest && currentItem && currentItem.irrigationNeedMm > 0
+      ? Math.round(
+          ((currentItem.irrigationNeedMm - cheapest.irrigationNeedMm) /
+            currentItem.irrigationNeedMm) *
+            100,
+        )
+      : null;
 
   const apiError = statesReq.error ?? districtsReq.error ?? cropsReq.error;
+  const analysisError = riskReq.error ?? demandReq.error ?? groundwaterReq.error;
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-6">
@@ -78,6 +152,31 @@ export default function Dashboard({ setCurrentPage }) {
               Start the backend with <code className="font-mono">npm run dev</code> inside the{' '}
               <code className="font-mono">server/</code> folder.
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* Groundwater, weather and risk exist for Haryana only. Saying so beats
+          showing a dashboard full of em dashes with no explanation. */}
+      {!isHaryana && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl p-4 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-semibold">Analysis is available for Haryana only</p>
+            <p className="text-xs mt-0.5">
+              Groundwater categorisation, weather and risk scoring were collected for
+              Haryana&apos;s 22 districts. Switch the state to Haryana to see them.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {analysisError && isHaryana && (
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-2xl p-4 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-semibold">Could not compute the analysis</p>
+            <p className="text-xs mt-0.5">{analysisError.message}</p>
           </div>
         </div>
       )}
@@ -204,22 +303,35 @@ export default function Dashboard({ setCurrentPage }) {
           <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
             <p className="text-xs font-bold text-slate-400 tracking-wider uppercase">Groundwater Status</p>
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-extrabold text-slate-800">88</span>
-              <span className="text-slate-400 font-medium">/ 143</span>
+              <span className="text-3xl font-extrabold text-slate-800">{show(overExploited)}</span>
+              <span className="text-slate-400 font-medium">/ {show(totalBlocks)}</span>
             </div>
             <p className="text-xs text-slate-500 leading-relaxed">
-              Punjab blocks classified as <span className="text-red-600 font-bold">over-exploited</span>.
+              {isHaryana ? 'Haryana' : 'Selected state'} blocks classified as{' '}
+              <span className="text-red-600 font-bold">over-exploited</span>
+              {isHaryana && ' (CGWB GWRA-2025)'}.
             </p>
 
             <div className="space-y-1">
               <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-red-500 rounded-full w-[61.5%]" />
+                <div
+                  className="h-full bg-red-500 rounded-full transition-all"
+                  style={{ width: `${overExploitedPct ?? 0}%` }}
+                />
               </div>
               <div className="flex justify-between text-[11px] text-slate-400 font-medium pt-1">
-                <span>Critical Ratio</span>
-                <span className="text-red-600 font-bold">61.5%</span>
+                <span>Over-exploited ratio</span>
+                <span className="text-red-600 font-bold">
+                  {overExploitedPct === null ? '—' : `${overExploitedPct.toFixed(1)}%`}
+                </span>
               </div>
             </div>
+
+            {groundwater?.summary?.trend?.worsened > 0 && (
+              <p className="text-[11px] text-red-600 font-semibold">
+                {groundwater.summary.trend.worsened} block(s) worsened since GWRA-2024
+              </p>
+            )}
 
             <div className="pt-1">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-600 border border-red-200">
@@ -232,14 +344,22 @@ export default function Dashboard({ setCurrentPage }) {
           {/* Risk Score Card */}
           <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
             <div className="space-y-2">
-              <p className="text-xs font-bold text-slate-400 tracking-wider uppercase">Risk Score</p>
+              <p className="text-xs font-bold text-slate-400 tracking-wider uppercase">
+                Risk Score{districtName ? ` · ${districtName}` : ''}
+              </p>
               <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-extrabold text-slate-800">78</span>
+                <span className="text-3xl font-extrabold text-slate-800">
+                  {show(risk?.riskScore)}
+                </span>
                 <span className="text-slate-400 text-sm font-medium">/ 100</span>
               </div>
-              <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-700 border border-amber-200">
-                HIGH
-              </span>
+              {risk?.riskBand && (
+                <span
+                  className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${bandStyle(risk.riskBand).bg}`}
+                >
+                  {risk.riskBand.toUpperCase()}
+                </span>
+              )}
             </div>
 
             {/* Gauge Ring */}
@@ -253,8 +373,8 @@ export default function Dashboard({ setCurrentPage }) {
                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
                 <path
-                  className="text-red-500"
-                  strokeDasharray="78, 100"
+                  className={bandStyle(risk?.riskBand).bar}
+                  strokeDasharray={`${risk?.riskScore ?? 0}, 100`}
                   strokeWidth="3.5"
                   strokeLinecap="round"
                   stroke="currentColor"
@@ -262,7 +382,9 @@ export default function Dashboard({ setCurrentPage }) {
                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
               </svg>
-              <span className="absolute text-xs font-bold text-slate-800">78%</span>
+              <span className="absolute text-xs font-bold text-slate-800">
+                {risk?.riskScore === undefined ? '—' : `${Math.round(risk.riskScore)}%`}
+              </span>
             </div>
           </div>
         </div>
@@ -275,13 +397,19 @@ export default function Dashboard({ setCurrentPage }) {
             <Droplets className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-medium text-slate-400">Groundwater Extraction</p>
+            <p className="text-xs font-medium text-slate-400">
+              Blocks Critical or worse{districtName ? ` · ${districtName}` : ''}
+            </p>
             <div className="flex items-baseline gap-2 mt-0.5">
-              <span className="text-2xl font-bold text-slate-800">88</span>
-              <span className="text-slate-400 text-sm font-medium">/ 143</span>
+              <span className="text-2xl font-bold text-slate-800">
+                {show(risk?.components?.extraction?.blocksCriticalOrWorse)}
+              </span>
+              <span className="text-slate-400 text-sm font-medium">
+                / {show(risk?.components?.extraction?.blockCount)}
+              </span>
             </div>
             <span className="inline-block mt-1 text-[11px] font-semibold text-red-500 bg-red-50 px-2 py-0.5 rounded-full">
-              • Over-exploited
+              • {risk?.components?.extraction?.worstCategory ?? 'Loading'}
             </span>
           </div>
         </div>
@@ -293,11 +421,16 @@ export default function Dashboard({ setCurrentPage }) {
           <div>
             <p className="text-xs font-medium text-slate-400">Crop Water Demand</p>
             <div className="flex items-baseline gap-1 mt-0.5">
-              <span className="text-2xl font-bold text-slate-800">5.8</span>
+              <span className="text-2xl font-bold text-slate-800">
+                {show(demand?.averages?.etcMmPerDay)}
+              </span>
               <span className="text-slate-500 text-xs font-semibold">mm/day</span>
             </div>
             <span className="inline-block mt-1 text-[11px] font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
-              • Paddy
+              • {demand?.crop?.name ?? selectedCrop?.name ?? 'Loading'}
+              {demand?.peakDemand?.etcMmPerDay
+                ? ` · peak ${demand.peakDemand.etcMmPerDay}`
+                : ''}
             </span>
           </div>
         </div>
@@ -307,13 +440,15 @@ export default function Dashboard({ setCurrentPage }) {
             <ShieldAlert className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-medium text-slate-400">Risk Score</p>
+            <p className="text-xs font-medium text-slate-400">Irrigation Need</p>
             <div className="flex items-baseline gap-1 mt-0.5">
-              <span className="text-2xl font-bold text-slate-800">78</span>
-              <span className="text-slate-400 text-sm font-medium">/ 100</span>
+              <span className="text-2xl font-bold text-slate-800">
+                {show(demand?.totals?.irrigationNeedMm)}
+              </span>
+              <span className="text-slate-500 text-xs font-semibold">mm/season</span>
             </div>
             <span className="inline-block mt-1 text-[11px] font-semibold text-red-500 bg-red-50 px-2 py-0.5 rounded-full">
-              • High
+              • rainfall covers {show(demand?.totals?.rainfallMetPct, '%')}
             </span>
           </div>
         </div>
@@ -330,40 +465,64 @@ export default function Dashboard({ setCurrentPage }) {
             </button>
           </div>
 
+          {/* The three bars are the risk score's own components, weighted
+              0.6 / 0.4 / trend - so they add up to the score shown above
+              rather than being three unrelated percentages. */}
           <div className="space-y-4">
-            {/* Row 1 */}
-            <div>
-              <div className="flex justify-between text-xs font-medium text-slate-600 mb-1.5">
-                <span>Groundwater Extraction</span>
-                <span className="font-bold text-slate-800">85%</span>
+            {[
+              {
+                label: 'Groundwater Extraction',
+                sub: '60% of score',
+                value: risk?.components?.extraction?.score,
+                bar: 'from-amber-500 to-red-500',
+              },
+              {
+                label: 'Crop Water Demand',
+                sub: '40% of score',
+                value: risk?.components?.demand?.score,
+                bar: 'from-amber-500 to-red-500',
+              },
+              {
+                label: 'Water Stress Trend',
+                sub: 'blocks worsened since 2024',
+                value: risk?.components?.trendPenalty,
+                bar: 'from-yellow-400 to-amber-500',
+              },
+            ].map((row) => (
+              <div key={row.label}>
+                <div className="flex justify-between text-xs font-medium text-slate-600 mb-1.5">
+                  <span>
+                    {row.label}
+                    <span className="text-slate-400 font-normal"> · {row.sub}</span>
+                  </span>
+                  <span className="font-bold text-slate-800">
+                    {row.value === undefined || row.value === null
+                      ? '—'
+                      : `${Math.round(row.value)}%`}
+                  </span>
+                </div>
+                <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full bg-gradient-to-r ${row.bar} rounded-full transition-all`}
+                    style={{ width: `${row.value ?? 0}%` }}
+                  />
+                </div>
               </div>
-              <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-amber-500 to-red-500 rounded-full w-[85%]" />
-              </div>
-            </div>
-
-            {/* Row 2 */}
-            <div>
-              <div className="flex justify-between text-xs font-medium text-slate-600 mb-1.5">
-                <span>Crop Water Demand</span>
-                <span className="font-bold text-slate-800">72%</span>
-              </div>
-              <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-amber-500 to-red-500 rounded-full w-[72%]" />
-              </div>
-            </div>
-
-            {/* Row 3 */}
-            <div>
-              <div className="flex justify-between text-xs font-medium text-slate-600 mb-1.5">
-                <span>Water Stress Trend</span>
-                <span className="font-bold text-slate-800">61%</span>
-              </div>
-              <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full w-[61%]" />
-              </div>
-            </div>
+            ))}
           </div>
+
+          {/* The service names WHY this district scores what it does. Printing
+              it beats making the reader infer causes from three bars. */}
+          {risk?.drivers?.length > 0 && (
+            <ul className="space-y-1.5 pt-1">
+              {risk.drivers.map((driver) => (
+                <li key={driver} className="text-xs text-slate-500 flex gap-2 leading-relaxed">
+                  <span className="text-teal-600 shrink-0">•</span>
+                  {driver}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {/* Recommendation Card */}
@@ -378,16 +537,36 @@ export default function Dashboard({ setCurrentPage }) {
             </p>
           </div>
 
-          <div className="bg-white p-4 rounded-xl border border-teal-100 shadow-xs space-y-2">
-            <div className="flex items-center justify-between text-sm font-bold text-slate-800">
-              <span>Paddy</span>
-              <ArrowRight className="w-4 h-4 text-teal-600" />
-              <span>Maize</span>
+          {/* Computed per district from its own weather, replacing the old
+              hardcoded "Paddy -> Maize, -32%" which did not match its data.
+              Hidden entirely when the selected crop already IS the cheapest -
+              recommending a switch to itself would be nonsense. */}
+          {cheapest && currentItem && cheapest.cropId !== currentItem.cropId ? (
+            <div className="bg-white p-4 rounded-xl border border-teal-100 shadow-xs space-y-2">
+              <div className="flex items-center justify-between text-sm font-bold text-slate-800">
+                <span>{currentItem.name}</span>
+                <ArrowRight className="w-4 h-4 text-teal-600" />
+                <span>{cheapest.name}</span>
+              </div>
+              <p className="text-xs text-teal-700 font-medium">
+                Irrigation need:{' '}
+                <span className="font-bold text-teal-800">
+                  {switchSavingPct === null ? '—' : `-${switchSavingPct}%`}
+                </span>{' '}
+                ({currentItem.irrigationNeedMm} → {cheapest.irrigationNeedMm} mm)
+              </p>
             </div>
-            <p className="text-xs text-teal-700 font-medium">
-              Estimated water demand: <span className="font-bold text-teal-800">-32%</span>
-            </p>
-          </div>
+          ) : (
+            <div className="bg-white p-4 rounded-xl border border-teal-100 shadow-xs">
+              <p className="text-xs text-slate-500">
+                {compareReq.loading
+                  ? 'Comparing crops...'
+                  : cheapest
+                    ? `${cheapest.name} already has the lowest irrigation need this season.`
+                    : 'Select a Haryana district to compare crops.'}
+              </p>
+            </div>
+          )}
 
           <button
             onClick={() => setCurrentPage && setCurrentPage('crop-intelligence')}
