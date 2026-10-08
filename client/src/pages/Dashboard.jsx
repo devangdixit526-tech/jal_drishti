@@ -35,6 +35,9 @@ export default function Dashboard({ setCurrentPage }) {
     ? selectedDistrictId
     : (districts[0]?.id ?? '');
 
+  // The map and the demand endpoints key on district NAME, not id.
+  const selectedDistrict = districts.find((d) => d.id === effectiveDistrictId);
+
   const apiError = statesReq.error ?? districtsReq.error ?? cropsReq.error;
 
   return (
@@ -166,7 +169,17 @@ export default function Dashboard({ setCurrentPage }) {
 
           {/* Leaflet Map */}
           <div className="absolute inset-0 pt-14">
-            <RiskMap />
+            {/* RiskMap matches on district NAME, which is what the GeoJSON
+                carries; the selects hold ids like 'HR-KNL'. Clicking a
+                polygon selects that district, so map and dropdown stay in
+                step in both directions. */}
+            <RiskMap
+              highlightDistrict={selectedDistrict?.name}
+              onSelectDistrict={(name) => {
+                const match = districts.find((d) => d.name === name);
+                if (match) setSelectedDistrictId(match.id);
+              }}
+            />
           </div>
           {/* Map Legend */}
           <div className="flex items-center justify-center gap-6 z-10 bg-slate-900/60 backdrop-blur-md py-2 px-4 rounded-xl border border-slate-800 self-center">

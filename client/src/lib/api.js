@@ -21,7 +21,23 @@ export class ApiError extends Error {
   }
 }
 
-async function request(path, { signal } = {}) {
+/**
+ * Builds a query string, skipping params that are undefined, null or ''.
+ *
+ * Without the skip, `season=undefined` reaches the server as the literal
+ * string "undefined" and fails validation with a confusing 400.
+ */
+function query(params) {
+  const search = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null || value === '') continue;
+    search.set(key, String(value));
+  }
+  const string = search.toString();
+  return string ? `?${string}` : '';
+}
+
+async function send(path, { signal } = {}) {
   let response;
   try {
     response = await fetch(`${BASE_URL}${path}`, {
@@ -49,8 +65,25 @@ async function request(path, { signal } = {}) {
     );
   }
 
-  // The server always wraps success in { data, meta }. Hand both back.
+  return payload;
+}
+
+/** For the normal endpoints, which wrap success in { data, meta }. */
+async function request(path, opts) {
+  const payload = await send(path, opts);
   return { data: payload?.data ?? null, meta: payload?.meta ?? null };
+}
+
+/**
+ * For /risk/map, which returns a bare GeoJSON FeatureCollection.
+ *
+ * It is not wrapped in `data` because L.geoJSON() takes a FeatureCollection
+ * directly. Shaped as { data, meta } here anyway so useApi() - which expects
+ * that pair - works unchanged for it.
+ */
+async function requestRaw(path, opts) {
+  const payload = await send(path, opts);
+  return { data: payload, meta: payload?._meta ?? null };
 }
 
 export const api = {
@@ -70,4 +103,26 @@ export const api = {
       season ? `/crops/compare?season=${encodeURIComponent(season)}` : '/crops/compare',
       opts,
     ),
+
+  // --- groundwater: CGWB block categorisation (Haryana) -----------------
+  getGroundwaterStatus: (district, opts) =>
+    request(`/groundwater/status${query({ district })}`, opts),
+
+  // --- crop water demand: computed, FAO-56 ------------------------------
+  // `year` is the SOWING year and defaults server-side to 2025.
+  getWaterDemand: ({ district, crop, year, daily } = {}, opts) =>
+    request(`/water-demand${query({ district, crop, year, daily })}`, opts),
+  compareWaterDemand: ({ district, season, year } = {}, opts) =>
+    request(`/water-demand/compare${query({ district, season, year })}`, opts),
+
+  // --- risk --------------------------------------------------------------
+  getRiskScore: ({ district, season, year } = {}, opts) =>
+    request(`/risk/score${query({ district, season, year })}`, opts),
+  getRiskRanking: ({ season, year } = {}, opts) =>
+    request(`/risk/ranking${query({ season, year })}`, opts),
+  getRiskMethodology: (opts) => request('/risk/methodology', opts),
+
+  // Bare GeoJSON - see requestRaw above.
+  getRiskMap: ({ season, year } = {}, opts) =>
+    requestRaw(`/risk/map${query({ season, year })}`, opts),
 };
